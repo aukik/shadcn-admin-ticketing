@@ -23,7 +23,7 @@ export default function AuthLayout({ children }: Props) {
           </svg> */}
          <img
             className="mx-4"
-            src="src/assets/android-chrome-512x512.png"
+            src="https://bismo54397.blob.core.windows.net/storeblob/android-chrome-512x512.png"
             alt="Description of your image"
             width={50}
             height={50}

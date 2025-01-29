@@ -22,7 +22,7 @@ import {
 } from '@tabler/icons-react'
 import { AudioWaveform, Command, GalleryVerticalEnd } from 'lucide-react'
 import { type SidebarData } from '../types'
-import LogoImage from '../../../assets/android-chrome-512x512.png'
+// import LogoImage from '../../../assets/android-chrome-512x512.png'
 
 export const sidebarData: SidebarData = {
   user: {
@@ -33,7 +33,7 @@ export const sidebarData: SidebarData = {
   teams: [
     {
       name: 'Bismo Ticketing',
-      logo: LogoImage,
+      logo: "https://bismo54397.blob.core.windows.net/storeblob/android-chrome-512x512.png",
       plan: 'Event Tickets',
     },
     // {
