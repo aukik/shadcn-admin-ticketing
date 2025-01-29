@@ -21,7 +21,7 @@ export function TeamSwitcher({
 }: {
   teams: {
     name: string
-    logo: React.ElementType
+    logo: string
     plan: string
   }[]
 }) {
@@ -37,8 +37,8 @@ export function TeamSwitcher({
               size='lg'
               className='data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground'
             >
-              <div className='flex aspect-square size-8 items-center justify-center rounded-lg bg-sidebar-primary text-sidebar-primary-foreground'>
-                <activeTeam.logo className='size-4' />
+              <div className='flex aspect-square items-center justify-center rounded-lg'>
+                <img src={activeTeam.logo} className='h-8 w-8' />
               </div>
               <div className='grid flex-1 text-left text-sm leading-tight'>
                 <span className='truncate font-semibold'>
@@ -64,20 +64,14 @@ export function TeamSwitcher({
                 onClick={() => setActiveTeam(team)}
                 className='gap-2 p-2'
               >
-                <div className='flex size-6 items-center justify-center rounded-sm border'>
-                  <team.logo className='size-4 shrink-0' />
+                <div className='flex items-center gap-2'>
+                  <img src={team.logo} alt={team.name} className='h-4 w-4 rounded' />
+                  <span>{team.name}</span>
                 </div>
-                {team.name}
                 <DropdownMenuShortcut>⌘{index + 1}</DropdownMenuShortcut>
               </DropdownMenuItem>
             ))}
             <DropdownMenuSeparator />
-            <DropdownMenuItem className='gap-2 p-2'>
-              <div className='flex size-6 items-center justify-center rounded-md border bg-background'>
-                <Plus className='size-4' />
-              </div>
-              <div className='font-medium text-muted-foreground'>Add team</div>
-            </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
       </SidebarMenuItem>

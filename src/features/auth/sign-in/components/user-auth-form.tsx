@@ -2,8 +2,8 @@ import { HTMLAttributes, useState } from 'react'
 import { z } from 'zod'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { Link } from '@tanstack/react-router'
-import { IconBrandFacebook, IconBrandGithub } from '@tabler/icons-react'
+import { Link, useNavigate } from '@tanstack/react-router'
+import axios from 'axios'
 import { cn } from '@/lib/utils'
 import { Button } from '@/components/ui/button'
 import {
@@ -16,6 +16,7 @@ import {
 } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
 import { PasswordInput } from '@/components/password-input'
+import { useApi } from '@/hooks/use-api'
 
 type UserAuthFormProps = HTMLAttributes<HTMLDivElement>
 
@@ -26,16 +27,15 @@ const formSchema = z.object({
     .email({ message: 'Invalid email address' }),
   password: z
     .string()
-    .min(1, {
-      message: 'Please enter your password',
-    })
-    .min(7, {
-      message: 'Password must be at least 7 characters long',
-    }),
+    .min(1, { message: 'Please enter your password' })
+    .min(6, { message: 'Password must be at least 7 characters long' }),
 })
 
 export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
+  const api = useApi(false); // Enable auth check
   const [isLoading, setIsLoading] = useState(false)
+  const [error, setError] = useState<string | null>(null)
+  const navigate = useNavigate()
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -45,29 +45,59 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
     },
   })
 
-  function onSubmit(data: z.infer<typeof formSchema>) {
+  async function onSubmit(data: z.infer<typeof formSchema>) {
     setIsLoading(true)
-    // eslint-disable-next-line no-console
-    console.log(data)
+    setError(null)
 
-    setTimeout(() => {
+
+
+    try {
+      // const response = await axios.post(`${import.meta.env.VITE_API_URL}api/v1/admin/auth/login`, {
+      //   email: data.email,
+      //   password: data.password,
+      // })
+
+    const response = await api.post(`${import.meta.env.VITE_API_URL}api/v1/admin/auth/login`, {
+      email: data.email,
+      password: data.password,
+    })
+
+
+
+      // Store token in localStorage
+      const token = response?.data?.accessToken
+      localStorage.setItem('accessToken', token)
+
+      // Redirect to dashboard or home page
+      navigate({ to: '/' })
+    } catch (err) {
+      if (axios.isAxiosError(err)) {
+        setError(err.response?.data?.message || 'Login failed')
+      } else {
+        setError('An unexpected error occurred')
+      }
+    } finally {
       setIsLoading(false)
-    }, 3000)
+    }
   }
 
   return (
     <div className={cn('grid gap-6', className)} {...props}>
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)}>
-          <div className='grid gap-2'>
+          <div className="grid gap-2">
             <FormField
               control={form.control}
-              name='email'
+              name="email"
               render={({ field }) => (
-                <FormItem className='space-y-1'>
+                <FormItem className="space-y-1">
                   <FormLabel>Email</FormLabel>
                   <FormControl>
-                    <Input placeholder='name@example.com' {...field} />
+                    <Input
+                      placeholder="name@example.com"
+                      {...field}
+                      disabled={isLoading}
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -75,58 +105,37 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
             />
             <FormField
               control={form.control}
-              name='password'
+              name="password"
               render={({ field }) => (
-                <FormItem className='space-y-1'>
-                  <div className='flex items-center justify-between'>
+                <FormItem className="space-y-1">
+                  <div className="flex items-center justify-between">
                     <FormLabel>Password</FormLabel>
-                    <Link
-                      to='/forgot-password'
-                      className='text-sm font-medium text-muted-foreground hover:opacity-75'
+                    {/* <Link
+                      to="/forgot-password"
+                      className="text-sm font-medium text-muted-foreground hover:opacity-75"
                     >
                       Forgot password?
-                    </Link>
+                    </Link> */}
                   </div>
                   <FormControl>
-                    <PasswordInput placeholder='********' {...field} />
+                    <PasswordInput
+                      placeholder="********"
+                      {...field}
+                      disabled={isLoading}
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
               )}
             />
-            <Button className='mt-2' disabled={isLoading}>
-              Login
+
+            {error && (
+              <p className="text-sm font-medium text-destructive">{error}</p>
+            )}
+
+            <Button className="mt-2" disabled={isLoading}>
+              {isLoading ? 'Logging in...' : 'Login'}
             </Button>
-
-            <div className='relative my-2'>
-              <div className='absolute inset-0 flex items-center'>
-                <span className='w-full border-t' />
-              </div>
-              <div className='relative flex justify-center text-xs uppercase'>
-                <span className='bg-background px-2 text-muted-foreground'>
-                  Or continue with
-                </span>
-              </div>
-            </div>
-
-            <div className='flex items-center gap-2'>
-              <Button
-                variant='outline'
-                className='w-full'
-                type='button'
-                disabled={isLoading}
-              >
-                <IconBrandGithub className='h-4 w-4' /> GitHub
-              </Button>
-              <Button
-                variant='outline'
-                className='w-full'
-                type='button'
-                disabled={isLoading}
-              >
-                <IconBrandFacebook className='h-4 w-4' /> Facebook
-              </Button>
-            </div>
           </div>
         </form>
       </Form>

@@ -10,7 +10,7 @@ import {
   getFacetedRowModel,
   getFacetedUniqueValues,
   getFilteredRowModel,
-  getPaginationRowModel,
+  // getPaginationRowModel,
   getSortedRowModel,
   useReactTable,
 } from '@tanstack/react-table'
@@ -24,7 +24,9 @@ import {
 } from '@/components/ui/table'
 import { User } from '../data/schema'
 import { DataTablePagination } from './data-table-pagination'
-import { DataTableToolbar } from './data-table-toolbar'
+import { useApi } from '@/hooks/use-api';
+import { ConfirmationModal } from '@/components/confirmation-modal';
+// import { DataTableToolbar } from './data-table-toolbar'
 
 declare module '@tanstack/react-table' {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -36,13 +38,23 @@ declare module '@tanstack/react-table' {
 interface DataTableProps {
   columns: ColumnDef<User>[]
   data: User[]
+  pageIndex: number
+  pageSize: number
+  totalItems: number
+  onPageChange: (newPage: number) => void
+  onPageSizeChange: (newSize: number) => void
+  onRefresh: () => void
 }
-
-export function UsersTable({ columns, data }: DataTableProps) {
+export function UsersTable({ columns, data, pageIndex, pageSize, totalItems, onPageChange, onPageSizeChange,  onRefresh  }: DataTableProps) {
   const [rowSelection, setRowSelection] = useState({})
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({})
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([])
   const [sorting, setSorting] = useState<SortingState>([])
+
+  const api = useApi(true);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedUser, setSelectedUser] = useState<User | null>(null);
+  const [actionType, setActionType] = useState<'accept' | 'reject' | null>(null);
 
   const table = useReactTable({
     data,
@@ -53,23 +65,30 @@ export function UsersTable({ columns, data }: DataTableProps) {
       rowSelection,
       columnFilters,
     },
-    enableRowSelection: true,
+    enableRowSelection: false,
     onRowSelectionChange: setRowSelection,
     onSortingChange: setSorting,
     onColumnFiltersChange: setColumnFilters,
     onColumnVisibilityChange: setColumnVisibility,
     getCoreRowModel: getCoreRowModel(),
     getFilteredRowModel: getFilteredRowModel(),
-    getPaginationRowModel: getPaginationRowModel(),
+    // getPaginationRowModel: getPaginationRowModel(),
     getSortedRowModel: getSortedRowModel(),
     getFacetedRowModel: getFacetedRowModel(),
     getFacetedUniqueValues: getFacetedUniqueValues(),
+    meta: {
+      openModal: (action: 'accept' | 'reject', user: User) => {
+        setSelectedUser(user);
+        setActionType(action);
+        setIsModalOpen(true);
+      }
+    },
   })
 
   return (
     <div className='space-y-4'>
-      <DataTableToolbar table={table} />
-      <div className='rounded-md border'>
+      {/* <DataTableToolbar table={table} /> */}
+      <div className='rounded-md border my-8'>
         <Table>
           <TableHeader>
             {table.getHeaderGroups().map((headerGroup) => (
@@ -127,7 +146,39 @@ export function UsersTable({ columns, data }: DataTableProps) {
           </TableBody>
         </Table>
       </div>
-      <DataTablePagination table={table} />
+      <DataTablePagination
+        pageIndex={pageIndex}
+        pageSize={pageSize}
+        totalItems={totalItems}
+        onPageChange={onPageChange}
+        onPageSizeChange={onPageSizeChange}
+      />
+
+<ConfirmationModal
+        isOpen={isModalOpen}
+        onClose={() => {
+          setIsModalOpen(false);
+          setSelectedUser(null);
+          setActionType(null);
+        }}
+        actionType={actionType}
+        onProceed={async () => {
+          if (!selectedUser || !actionType) return;
+
+          try {
+            // Demo API call - replace with your actual endpoint
+            const thisStatus = actionType === 'accept' ? 'APPROVED' : (actionType === 'reject' ? 'REJECTED' : '');
+
+            await api.put(`${import.meta.env.VITE_API_URL}api/v1/admin/tickets/updateStatus`, {
+              ticketId: selectedUser?.id,
+              status: thisStatus
+            });
+            onRefresh?.(); // Refresh the data after successful update
+          } catch (error) {
+            alert(`Error updating ticket: ${error}`);
+          }
+        }}
+      />
     </div>
   )
 }
