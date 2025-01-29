@@ -22,7 +22,7 @@ import {
 } from '@tabler/icons-react'
 import { AudioWaveform, Command, GalleryVerticalEnd } from 'lucide-react'
 import { type SidebarData } from '../types'
-import LogoImage from '../../../../public/images/android-chrome-512x512.png';
+import LogoImage from '../../../assets/android-chrome-512x512.png'
 
 export const sidebarData: SidebarData = {
   user: {
