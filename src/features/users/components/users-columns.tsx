@@ -92,31 +92,34 @@ export const columns: ColumnDef<User>[] = [
         openModal: (action: 'accept' | 'reject' | 'delete', user: User) => void
       };
 
-      if (status === 'PENDING') {
-        return (
-          <div className="flex space-x-2">
-            <Button
-              variant="outline"
-              className="text-green-500 hover:bg-green-500"
-              onClick={() => meta.openModal('accept', row.original)}
-            >
-              Accept
-            </Button>
-            <Button
-              variant="outline"
-              className="text-red-500 hover:bg-red-500"
-              onClick={() => meta.openModal('reject', row.original)}
-            >
-              Reject
-            </Button>
-            <Button className='text-red-500 bg-black hover:bg-red-500 hover:text-white' onClick={() => meta.openModal('delete', row.original)}>
-              <IconTrashXFilled />
-            </Button>
-
-          </div>
-        );
-      }
-      return null;
+      return (
+        <div className="flex space-x-2">
+          {status === 'PENDING' && (
+            <>
+              <Button
+                variant="outline"
+                className="text-green-500 hover:bg-green-500"
+                onClick={() => meta.openModal('accept', row.original)}
+              >
+                Accept
+              </Button>
+              <Button
+                variant="outline"
+                className="text-red-500 hover:bg-red-500"
+                onClick={() => meta.openModal('reject', row.original)}
+              >
+                Reject
+              </Button>
+            </>
+          )}
+          <Button
+            className='text-red-500 bg-black hover:bg-red-500 hover:text-white'
+            onClick={() => meta.openModal('delete', row.original)}
+          >
+            <IconTrashXFilled />
+          </Button>
+        </div>
+      );
     },
   },
 ]
