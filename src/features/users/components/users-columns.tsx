@@ -16,9 +16,11 @@ export const columns: ColumnDef<User>[] = [
         'bg-background transition-colors duration-200 group-hover/row:bg-muted group-data-[state=selected]/row:bg-muted'
       ),
     },
-    cell: () => (
-      <div className="w-4 h-4 bg-slate-500 rounded-full" />
-    ),
+    cell: ({ row, table }) => {
+      const meta = table.options.meta as { pageIndex: number; pageSize: number }
+      const index = meta.pageIndex * meta.pageSize + row.index + 1
+      return <div>{index}</div>
+    },
     enableSorting: false,
     enableHiding: false,
   },

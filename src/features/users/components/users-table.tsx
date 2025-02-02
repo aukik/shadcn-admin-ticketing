@@ -81,7 +81,9 @@ export function UsersTable({ columns, data, pageIndex, pageSize, totalItems, onP
         setSelectedUser(user);
         setActionType(action);
         setIsModalOpen(true);
-      }
+      },
+      pageIndex,      // Add current page index
+      pageSize,       // Add current page size
     },
   })
 
