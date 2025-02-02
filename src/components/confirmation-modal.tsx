@@ -13,7 +13,7 @@ interface ConfirmationModalProps {
   isOpen: boolean;
   onClose: () => void;
   onProceed: () => Promise<void>;
-  actionType: 'accept' | 'reject' | null;
+  actionType: 'accept' | 'reject'|'delete' | null;
 }
 
 export function ConfirmationModal({
@@ -35,7 +35,7 @@ export function ConfirmationModal({
 
   const actionMessage = actionType === 'accept'
     ? 'accept this ticket. A mail will be sent to the user containing the PDF file of the ticket'
-    : 'reject this ticket';
+    : (actionType==='reject'?'reject this ticket':'delete this ticket');
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>

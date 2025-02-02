@@ -54,7 +54,7 @@ export function UsersTable({ columns, data, pageIndex, pageSize, totalItems, onP
   const api = useApi(true);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedUser, setSelectedUser] = useState<User | null>(null);
-  const [actionType, setActionType] = useState<'accept' | 'reject' | null>(null);
+  const [actionType, setActionType] = useState<'accept' | 'reject'|'delete' | null>(null);
 
   const table = useReactTable({
     data,
@@ -77,7 +77,7 @@ export function UsersTable({ columns, data, pageIndex, pageSize, totalItems, onP
     getFacetedRowModel: getFacetedRowModel(),
     getFacetedUniqueValues: getFacetedUniqueValues(),
     meta: {
-      openModal: (action: 'accept' | 'reject', user: User) => {
+      openModal: (action: 'accept' | 'reject'|'delete', user: User) => {
         setSelectedUser(user);
         setActionType(action);
         setIsModalOpen(true);
@@ -169,10 +169,15 @@ export function UsersTable({ columns, data, pageIndex, pageSize, totalItems, onP
             // Demo API call - replace with your actual endpoint
             const thisStatus = actionType === 'accept' ? 'APPROVED' : (actionType === 'reject' ? 'REJECTED' : '');
 
-            await api.put(`${import.meta.env.VITE_API_URL}api/v1/admin/tickets/updateStatus`, {
-              ticketId: selectedUser?.id,
-              status: thisStatus
-            });
+            if(actionType === 'accept' || actionType === 'reject'){
+              await api.put(`${import.meta.env.VITE_API_URL}api/v1/admin/tickets/updateStatus`, {
+                ticketId: selectedUser?.id,
+                status: thisStatus
+              });
+            }else if(actionType === 'delete'){
+              await api.delete(`${import.meta.env.VITE_API_URL}api/v1/admin/tickets/deleteTicket?ticketId=${selectedUser?.id}`);
+            }
+
             onRefresh?.(); // Refresh the data after successful update
           } catch (error) {
             alert(`Error updating ticket: ${error}`);

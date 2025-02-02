@@ -30,7 +30,7 @@ export default function Users() {
     setLoading(true);
     api.get(`${import.meta.env.VITE_API_URL}api/v1/admin/tickets/tickets`, {
       params: {
-        eventId: '2d03b30f-b752-435e-9bef-2ccc44ad19f9',
+        eventId: import.meta.env.VITE_EVENT_ID,
         page: pagination.pageIndex + 1,
         pageSize: pagination.pageSize,
       }

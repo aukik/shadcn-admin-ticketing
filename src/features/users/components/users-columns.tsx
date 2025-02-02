@@ -5,6 +5,7 @@ import { Button } from '@/components/ui/button'  // Import your Button component
 import { callTypes } from '../data/data'
 import { User } from '../data/schema'
 import { DataTableColumnHeader } from './data-table-column-header'
+import {IconTrashXFilled} from "@tabler/icons-react";
 
 export const columns: ColumnDef<User>[] = [
   {
@@ -88,7 +89,7 @@ export const columns: ColumnDef<User>[] = [
     cell: ({ row, table }) => {
       const { status } = row.original;
       const meta = table.options.meta as {
-        openModal: (action: 'accept' | 'reject', user: User) => void
+        openModal: (action: 'accept' | 'reject' | 'delete', user: User) => void
       };
 
       if (status === 'PENDING') {
@@ -108,6 +109,10 @@ export const columns: ColumnDef<User>[] = [
             >
               Reject
             </Button>
+            <Button className='text-red-500 bg-black hover:bg-red-500 hover:text-white' onClick={() => meta.openModal('delete', row.original)}>
+              <IconTrashXFilled />
+            </Button>
+
           </div>
         );
       }

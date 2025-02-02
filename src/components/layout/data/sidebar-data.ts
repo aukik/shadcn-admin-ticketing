@@ -18,7 +18,8 @@ import {
   IconUserCog,
   IconUserOff,
   IconUsers,
-  IconTicket
+  IconTicket,
+  IconQrcode
 } from '@tabler/icons-react'
 import { AudioWaveform, Command, GalleryVerticalEnd } from 'lucide-react'
 import { type SidebarData } from '../types'
@@ -66,17 +67,24 @@ export const sidebarData: SidebarData = {
         //   url: '/apps',
         //   icon: IconPackages,
         // },
+
+        //! Uncomment later
         // {
-        //   title: 'Chats',
+        //   title: 'QR Scanner',
         //   url: '/chats',
-        //   badge: '3',
-        //   icon: IconMessages,
+        //   // badge: '3',
+        //   icon: IconQrcode,
         // },
         {
           title: 'Tickets',
           url: '/users',
           icon: IconTicket,
         },
+        // {
+        //   title: 'QR Scan',
+        //   url: '/users',
+        //   icon: IconTicket,
+        // },
       ],
     },
     {
