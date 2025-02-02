@@ -113,7 +113,7 @@ export const columns: ColumnDef<User>[] = [
             </>
           )}
           <Button
-            className='text-red-500 bg-black hover:bg-red-500 hover:text-white'
+            className='text-red-500 dark:bg-black bg-white dark:hover:bg-red-500  hover:bg-red-500 hover:text-white'
             onClick={() => meta.openModal('delete', row.original)}
           >
             <IconTrashXFilled />
