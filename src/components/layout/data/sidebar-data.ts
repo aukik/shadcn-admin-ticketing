@@ -80,11 +80,11 @@ export const sidebarData: SidebarData = {
           url: '/users',
           icon: IconTicket,
         },
-        // {
-        //   title: 'QR Scan',
-        //   url: '/users',
-        //   icon: IconTicket,
-        // },
+        {
+          title: 'QR Scan',
+          url: '/chats',
+          icon: IconTicket,
+        },
       ],
     },
     {
