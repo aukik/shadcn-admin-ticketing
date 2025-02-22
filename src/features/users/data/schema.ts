@@ -22,6 +22,7 @@ const userSchema = z.object({
   mobile: z.string(),
   status: userStatusSchema,
   clubName: z.string(),
+  administrativeZone: z.string(),
   bkashTransactionId: z.string(),
   createdAt: z.coerce.date(),
   updatedAt: z.coerce.date(),

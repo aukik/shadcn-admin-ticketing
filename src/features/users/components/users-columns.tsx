@@ -57,6 +57,14 @@ export const columns: ColumnDef<User>[] = [
     enableSorting: false,
   },
   {
+    accessorKey: 'administrativeZone',
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title='Administrative Zone' />
+    ),
+    cell: ({ row }) => <div>{row.getValue('administrativeZone')}</div>,
+    enableSorting: false,
+  },
+  {
     accessorKey: 'status',
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title='Status' />

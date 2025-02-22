@@ -17,6 +17,10 @@ export const users = Array.from({ length: 20 }, () => {
       'Khulna Club',
       'Rajshahi Club',
     ]),
+    administrativeZone: faker.helpers.arrayElement([
+      'D-64',
+      'D-65',
+    ]),
     status: faker.helpers.arrayElement([
       'PENDING',
       'APPROVED',

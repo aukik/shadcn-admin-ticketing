@@ -30,6 +30,7 @@ export const QRScanner: React.FC<QRScannerProps> = ({ setResult, onClose }) => {
           email: response.data.email,
           mobile: response.data.mobile,
           clubName: response.data.clubName,
+          administrativeZone: response.data.administrativeZone,
           position: response.data.position,
           ticketCode: response.data.ticketCode
         })

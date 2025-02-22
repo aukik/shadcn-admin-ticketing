@@ -3,6 +3,7 @@ type Result = {
   email: string;
   mobile: string;
   clubName: string;
+  administrativeZone: string;
   position: string;
   ticketCode: string;
 }

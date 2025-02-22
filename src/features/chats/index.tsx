@@ -60,6 +60,7 @@ export default function Chats() {
                 <p className="font-mono break-all text-green-500">Email: {result.email}</p>
                 <p className="font-mono break-all text-green-500">Mobile: {result.mobile}</p>
                 <p className="font-mono break-all text-green-500">Club Name: {result.clubName}</p>
+                <p className="font-mono break-all text-green-500">Club Name: {result.administrativeZone}</p>
                 <p className="font-mono break-all text-green-500">Position: {result.position}</p>
                 <p className="font-mono break-all text-green-500">Ticket Code: {result.ticketCode}</p>
               </div>
