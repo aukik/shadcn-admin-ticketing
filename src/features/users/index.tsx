@@ -8,15 +8,15 @@ import { UsersDialogs } from './components/users-dialogs'
 
 import { UsersTable } from './components/users-table'
 import UsersProvider from './context/users-context'
-// import { userListSchema } from './data/schema'
-import { users } from './data/users'
+// import { ticketListSchema } from './data/schema'
+import { Ticket } from './data/schema'
 import { useApi } from '@/hooks/use-api'
-import { useState, useEffect,useCallback } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 
 export default function Users() {
   const api = useApi(true)
-  // Parse user list
-  const [userList, setUserList] = useState<typeof users>(users)
+  // Parse ticket list
+  const [ticketList, setTicketList] = useState<Ticket[]>([])
 
   const [pagination, setPagination] = useState({
     pageIndex: 0, // 0-based index
@@ -26,7 +26,7 @@ export default function Users() {
   const [loading, setLoading] = useState(true)
   const [refreshTrigger, setRefreshTrigger] = useState(0);
 
-  const fetchUsers = useCallback(() => {
+  const fetchTickets = useCallback(() => {
     setLoading(true);
     api.get(`${import.meta.env.VITE_API_URL}api/v1/admin/tickets/tickets`, {
       params: {
@@ -35,7 +35,7 @@ export default function Users() {
         pageSize: pagination.pageSize,
       }
     }).then((res) => {
-      setUserList(res.data.items);
+      setTicketList(res.data.items);
       setPagination(prev => ({
         ...prev,
         total: res.data.total,
@@ -48,8 +48,8 @@ export default function Users() {
   }, [pagination.pageIndex, pagination.pageSize, api]);
 
   useEffect(() => {
-    fetchUsers();
-  }, [fetchUsers, refreshTrigger]); // Add refreshTrigger as dependency
+    fetchTickets();
+  }, [fetchTickets, refreshTrigger]); // Add refreshTrigger as dependency
 
   return (
     <UsersProvider>
@@ -66,7 +66,7 @@ export default function Users() {
           <div>
             <h2 className='text-2xl font-bold tracking-tight'>Tickets List </h2>
             <p className='text-muted-foreground'>
-              Manage your tickets.
+              Manage event tickets and participants.
             </p>
           </div>
           {/* <UsersPrimaryButtons /> */}
@@ -78,7 +78,7 @@ export default function Users() {
             </div>
           ) : (
             <UsersTable
-            data={userList}
+            data={ticketList}
             columns={columns}
             pageIndex={pagination.pageIndex}
             pageSize={pagination.pageSize}

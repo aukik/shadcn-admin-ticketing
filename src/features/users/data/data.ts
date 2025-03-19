@@ -38,3 +38,29 @@ export const userTypes = [
     icon: IconCash,
   },
 ] as const
+
+export const participationTypes = [
+  {
+    label: 'Solo',
+    value: 'solo',
+  },
+  {
+    label: 'Team',
+    value: 'team',
+  },
+] as const
+
+export const countries = [
+  {
+    label: 'Bangladesh',
+    value: 'bangladesh',
+  },
+  {
+    label: 'Nepal',
+    value: 'nepal',
+  },
+  {
+    label: 'Pakistan',
+    value: 'pakistan',
+  },
+] as const

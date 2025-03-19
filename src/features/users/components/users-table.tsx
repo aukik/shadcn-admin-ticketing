@@ -22,7 +22,7 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table'
-import { User } from '../data/schema'
+import { Ticket } from '../data/schema'
 import { DataTablePagination } from './data-table-pagination'
 import { useApi } from '@/hooks/use-api';
 import { ConfirmationModal } from '@/components/confirmation-modal';
@@ -36,8 +36,8 @@ declare module '@tanstack/react-table' {
 }
 
 interface DataTableProps {
-  columns: ColumnDef<User>[]
-  data: User[]
+  columns: ColumnDef<Ticket>[]
+  data: Ticket[]
   pageIndex: number
   pageSize: number
   totalItems: number
@@ -53,7 +53,7 @@ export function UsersTable({ columns, data, pageIndex, pageSize, totalItems, onP
 
   const api = useApi(true);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [selectedUser, setSelectedUser] = useState<User | null>(null);
+  const [selectedTicket, setSelectedTicket] = useState<Ticket | null>(null);
   const [actionType, setActionType] = useState<'accept' | 'reject'|'delete' | null>(null);
 
   const table = useReactTable({
@@ -77,8 +77,8 @@ export function UsersTable({ columns, data, pageIndex, pageSize, totalItems, onP
     getFacetedRowModel: getFacetedRowModel(),
     getFacetedUniqueValues: getFacetedUniqueValues(),
     meta: {
-      openModal: (action: 'accept' | 'reject'|'delete', user: User) => {
-        setSelectedUser(user);
+      openModal: (action: 'accept' | 'reject'|'delete', ticket: Ticket) => {
+        setSelectedTicket(ticket);
         setActionType(action);
         setIsModalOpen(true);
       },
@@ -160,12 +160,12 @@ export function UsersTable({ columns, data, pageIndex, pageSize, totalItems, onP
         isOpen={isModalOpen}
         onClose={() => {
           setIsModalOpen(false);
-          setSelectedUser(null);
+          setSelectedTicket(null);
           setActionType(null);
         }}
         actionType={actionType}
         onProceed={async () => {
-          if (!selectedUser || !actionType) return;
+          if (!selectedTicket || !actionType) return;
 
           try {
             // Demo API call - replace with your actual endpoint
@@ -173,11 +173,11 @@ export function UsersTable({ columns, data, pageIndex, pageSize, totalItems, onP
 
             if(actionType === 'accept' || actionType === 'reject'){
               await api.put(`${import.meta.env.VITE_API_URL}api/v1/admin/tickets/updateStatus`, {
-                ticketId: selectedUser?.id,
+                ticketId: selectedTicket?.id,
                 status: thisStatus
               });
             }else if(actionType === 'delete'){
-              await api.delete(`${import.meta.env.VITE_API_URL}api/v1/admin/tickets/deleteTicket?ticketId=${selectedUser?.id}`);
+              await api.delete(`${import.meta.env.VITE_API_URL}api/v1/admin/tickets/deleteTicket?ticketId=${selectedTicket?.id}`);
             }
 
             onRefresh?.(); // Refresh the data after successful update
