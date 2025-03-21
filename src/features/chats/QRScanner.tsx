@@ -1,4 +1,3 @@
-
 import { useState, useCallback } from 'react'
 import { Scanner as QrScanner } from '@yudiel/react-qr-scanner';
 // import { useEffect, useState } from 'react';
@@ -26,13 +25,11 @@ export const QRScanner: React.FC<QRScannerProps> = ({ setResult, onClose }) => {
         })
         // setResult(`Updated entry status for ${response.data.name}, \n Mobile: ${response.data.mobile}, \n Email: ${response.data.email}` );
         setResult({
-          name: response.data.name,
-          email: response.data.email,
-          mobile: response.data.mobile,
-          clubName: response.data.clubName,
-          administrativeZone: response.data.administrativeZone,
-          position: response.data.position,
-          ticketCode: response.data.ticketCode
+          name: response.data.firstName + " " + response.data.lastName,
+          phone: response.data.phone,
+          segmentName: response.data.soloSegment!=="" || response.data.soloSegment!==null?response.data.soloSegment:response.data.teamSegments,
+          amount: response.data.teamSegmentPrice>0?response.data.teamSegmentPrice:response.data.soloSegmentPrice,
+          institution: response.data.institution
         })
         onClose();
       } catch (err) {
