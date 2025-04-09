@@ -264,9 +264,10 @@ export const columns: ColumnDef<Ticket>[] = [
     ),
     cell: ({ row }) => {
       const photographyLink = row.original.photographyDriveLink
+      const posterPresentationDriveLink = row.original.posterPresentationDriveLink
       const tvcLink = row.original.tvcDriveLink
 
-      if (!photographyLink && !tvcLink) {
+      if (!photographyLink && !tvcLink && !posterPresentationDriveLink) {
         return <div>-</div>
       }
 
@@ -281,6 +282,17 @@ export const columns: ColumnDef<Ticket>[] = [
             >
               <IconBrandGoogleDrive className="h-4 w-4" />
               <span>Photography</span>
+            </a>
+          )}
+          {posterPresentationDriveLink && (
+            <a
+              href={posterPresentationDriveLink}
+              target="_blank"
+              rel="noreferrer"
+              className="text-blue-600 hover:underline flex items-center gap-1"
+            >
+              <IconBrandGoogleDrive className="h-4 w-4" />
+              <span>Poster Presentation</span>
             </a>
           )}
           {tvcLink && (

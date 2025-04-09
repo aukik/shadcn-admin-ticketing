@@ -51,6 +51,7 @@ const ticketSchema = z.object({
   teamMembersDetails: z.array(teamMemberSchema).nullable().optional(),
   extemporeLanguage: z.string().nullable().optional(),
   photographyDriveLink: z.string().nullable().optional(),
+  posterPresentationDriveLink: z.string().nullable().optional(),
   tvcDriveLink: z.string().nullable().optional(),
   clubPartner: z.string().nullable().optional(),
   caName: z.string().nullable().optional(),
