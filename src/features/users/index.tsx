@@ -7,6 +7,7 @@ import { columns } from './components/users-columns'
 import { UsersDialogs } from './components/users-dialogs'
 
 import { UsersTable } from './components/users-table'
+import { ExportPDFButton } from './components/export-pdf-button'
 import UsersProvider from './context/users-context'
 // import { ticketListSchema } from './data/schema'
 import { Ticket } from './data/schema'
@@ -69,7 +70,9 @@ export default function Users() {
               Manage event tickets and participants.
             </p>
           </div>
-          {/* <UsersPrimaryButtons /> */}
+          <div>
+            <ExportPDFButton />
+          </div>
         </div>
         <div className='-mx-4 flex-1 overflow-auto px-4 py-1 lg:flex-row lg:space-x-12 lg:space-y-0'>
         {loading ? (
