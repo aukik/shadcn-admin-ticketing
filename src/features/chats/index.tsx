@@ -57,10 +57,12 @@ export default function Chats() {
                 <h2 className="text-lg font-bold mb-2">Scanned QR Content:</h2>
                 <p className="font-mono break-all text-green-500">Success!</p>
                 <p className="font-mono break-all text-green-500">Name: {result.name}</p>
+                <p className="font-mono break-all text-green-500">Email: {result.email}</p>
                 <p className="font-mono break-all text-green-500">Phone: {result.phone}</p>
                 <p className="font-mono break-all text-green-500">Segment: {result.segmentName}</p>
                 <p className="font-mono break-all text-green-500">Amount: {result.amount}</p>
                 <p className="font-mono break-all text-green-500">Institution: {result.institution}</p>
+                <p className="font-mono break-all text-green-500">Team Size: {result.teamSize}</p>
               </div>
             ) : (
               <div className="text-gray-500 dark:text-gray-400">

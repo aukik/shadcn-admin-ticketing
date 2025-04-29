@@ -27,7 +27,9 @@ export const QRScanner: React.FC<QRScannerProps> = ({ setResult, onClose }) => {
         setResult({
           name: response.data.firstName + " " + response.data.lastName,
           phone: response.data.phone,
-          segmentName: response.data.soloSegment!=="" || response.data.soloSegment!==null?response.data.soloSegment:response.data.teamSegments,
+          email: response.data.email,
+          teamSize: response.data.teamMembersNumber,
+          segmentName: response.data.participationType==="team"?response.data.teamSegments:response.data.soloSegment,
           amount: response.data.teamSegmentPrice>0?response.data.teamSegmentPrice:response.data.soloSegmentPrice,
           institution: response.data.institution
         })
